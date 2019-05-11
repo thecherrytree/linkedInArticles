@@ -37,7 +37,7 @@ soup = BeautifulSoup(html, 'html.parser')
 articles = soup.find_all("article")
 
 with open('davigrgreen_articles.csv', mode='w') as csv_file:
-    fieldnames = ['author', 'date', 'title', 'url']
+    fieldnames = ['author', 'date', 'title', 'url', 'content']
     writer = csv.DictWriter(csv_file, delimiter=',', fieldnames=fieldnames)
     for article in articles:
         author = 'David R. Green'
@@ -47,5 +47,12 @@ with open('davigrgreen_articles.csv', mode='w') as csv_file:
             url += a['href']
         date = article.select('time')[1].text.strip()
         title = article.select('h1')[0].text.strip()
-        writer.writerow({'author': author, 'date': date, 'title': title, 'url':url})
+        browser.get(url)
+        html = browser.execute_script("return document.body.innerHTML;")
+        soup = BeautifulSoup(html, 'html.parser')
+        articles = soup.find("div", {"class": "reader-article-content"})
+        content = articles.find_all("p")
+        # print({'author': author, 'date': date, 'title': title, 'url': url, 'content': content})
+        writer.writerow({'author': author, 'date': date, 'title': title, 'url':url, 'content':content})
+        time.sleep(2)
 
