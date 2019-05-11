@@ -41,7 +41,7 @@ with open('davigrgreen_articles.csv', mode='w') as csv_file:
     writer = csv.DictWriter(csv_file, delimiter=',', fieldnames=fieldnames)
     for article in articles:
         author = 'David R. Green'
-        url = 'https://www.linkedin.com/'
+        url = 'https://www.linkedin.com'
         atags = article.findAll('a')
         for a in atags:
             url += a['href']
