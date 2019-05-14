@@ -5,15 +5,13 @@ A LinkedIn user recently wanted to perform a textual, thematic representation of
 This was written in Python 3.7 using PyCharm. 
 
 To run the code, you will need to import:
-```import csv
-import time
-import secrets
-from bs4 import BeautifulSoup
-import selenium.common.exceptions
-from selenium import webdriver
+```
+from supportingFunctions import *
 ```
 
-Note: The secrets file is used for automating authentication credentials. If you submit a pull request on this code, please don't commit your authentication credentials. You can remove them from your files staged for commit by using: `git reset HEAD <secretsfile>`
+The automation imports reside in the `supportingFunctions.py`.
+
+Note: The secrets file referenced in `supportingFunctions.py` is used for automating authentication into linkedin using account credentials. If you submit a pull request on this code, please don't commit your account credentials. You can remove them from your files staged for commit by using: `git reset HEAD <secretsfile>`
 
 # Links
 I've set up a few resources to manage this project if you wish to contribute:
