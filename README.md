@@ -16,6 +16,6 @@ Note: The secrets file referenced in `supportingFunctions.py` is used for automa
 # Links
 I've set up a few resources to manage this project if you wish to contribute:
 - [Project Board](https://github.com/thecherrytree/linkedInArticles/projects/1)
-- [Excel File for David Green's Top/Best Articles](https://github.com/thecherrytree/linkedInArticles/blob/master/data/top_articles.xlsx)
+- [Excel File for David Green's Top/Best Articles](https://github.com/thecherrytree/linkedInArticles/blob/master/data/top_articles.csv)
 - [CSV File for David Green's Article Text](https://github.com/thecherrytree/linkedInArticles/blob/master/data/davigrgreen_articles.csv)
 - [My LinkedIn (if you want to connect/contribute)](https://www.linkedin.com/in/casoncherry/)
