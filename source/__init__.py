@@ -1,58 +1,21 @@
 import csv
-import time
-import secrets
-from bs4 import BeautifulSoup
-import selenium.common.exceptions
-from selenium import webdriver
+from supportingFunctions import *
 
 loginUrl = 'https://www.linkedin.com/login'
 resultsUrl = 'https://www.linkedin.com/in/davidrgreen/detail/recent-activity/posts/'
 
-chromeOptions = webdriver.ChromeOptions()
-chromeOptions.add_experimental_option('useAutomationExtension', False)
-browser = webdriver.Chrome(options=chromeOptions,
-                           desired_capabilities=chromeOptions.to_capabilities())
-browser.get(loginUrl)
-browser.execute_script(
-    "document.getElementById('username').setAttribute('value', '" + secrets.username + "')")
-browser.execute_script(
-    "document.getElementById('password').setAttribute('value', '" + secrets.password + "')")
-browser.find_element_by_xpath('//*[@id="app__container"]/main/div/form/div[3]/button').click()
+browser = supportingFunctions.start_browser_and_login(loginUrl)
 browser.get(resultsUrl)
-# Get scroll height.
-last_height = browser.execute_script("return document.body.scrollHeight")
 
-while True:
-    # Scroll down to the bottom.
-    browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-    # Wait to load the page.
-    time.sleep(2)
-    # Calculate new scroll height and compare with last scroll height.
-    new_height = browser.execute_script("return document.body.scrollHeight")
-    if new_height == last_height:
-        break
-    last_height = new_height
-html = browser.execute_script("return document.body.innerHTML;")
-soup = BeautifulSoup(html, 'html.parser')
+#scroll the browser (we need this to get dynamicall loaded content) to the bottom to get all available articles...this could take a few minutes.
+supportingFunctions.browser_scroll(browser)
+
+#get the html content from the fully scrolled browser
+soup = supportingFunctions.parse_html(browser)
+#extract <article> tags from html content
 articles = soup.find_all("article")
 
-with open('davigrgreen_articles.csv', mode='w') as csv_file:
-    fieldnames = ['author', 'date', 'title', 'url', 'content']
-    writer = csv.DictWriter(csv_file, delimiter=',', fieldnames=fieldnames)
-    for article in articles:
-        author = 'David R. Green'
-        url = 'https://www.linkedin.com'
-        atags = article.findAll('a')
-        for a in atags:
-            url += a['href']
-        date = article.select('time')[1].text.strip()
-        title = article.select('h1')[0].text.strip()
-        browser.get(url)
-        html = browser.execute_script("return document.body.innerHTML;")
-        soup = BeautifulSoup(html, 'html.parser')
-        articles = soup.find("div", {"class": "reader-article-content"})
-        content = articles.find_all("p")
-        # print({'author': author, 'date': date, 'title': title, 'url': url, 'content': content})
-        writer.writerow({'author': author, 'date': date, 'title': title, 'url':url, 'content':content})
-        time.sleep(2)
+#build out the file of david greens articles (davidrgreen_articles.csv) in the data folder.
+supportingFunctions.build_article_file_of_david_green_articles(articles, browser)
+
 
