@@ -17,8 +17,7 @@ The automation imports reside in the `supportingFunctions.py`.
 3. Ensure you have a python environment setup (PyCharm community is fine, you can also use VSCode or others...)
 4. Set up your own secrets file and import your secrets as variables
 5. Run the script to watch the selenium browser scrape data
-6. You can comment out `#build out the file of david greens articles (davidrgreen_articles.csv) in the data folder.
-supportingFunctions.build_article_file_of_david_green_articles(articles, browser)` in the `__init__.py` to skip the creation of the file
+6. You can comment out `supportingFunctions.build_article_file_of_david_green_articles(articles, browser)` in the `__init__.py` to skip the creation of the file
 
 
 Note: The secrets file referenced in `supportingFunctions.py` is used for automating authentication into linkedin using account credentials. If you submit a pull request on this code, please don't commit your account credentials. You can remove them from your files staged for commit by using: `git reset HEAD <secretsfile>`
