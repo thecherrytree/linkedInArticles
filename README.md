@@ -13,7 +13,7 @@ The automation imports reside in the `supportingFunctions.py`.
 
 Note: The secrets file referenced in `supportingFunctions.py` is used for automating authentication into linkedin using account credentials. If you submit a pull request on this code, please don't commit your account credentials. You can remove them from your files staged for commit by using: `git reset HEAD <secretsfile>`
 
-# Get Involved:
+# Get Involved
 
 If you would like to get involved, there are a few ways you can do so:
  - Fork the code and tinker around with the script on your own
@@ -25,14 +25,14 @@ If you would like to get involved, there are a few ways you can do so:
 
 
 # Links
-I've set up a few resources to manage this project if you wish to contribute:
-- [The post that started the project](https://www.linkedin.com/feed/update/urn:li:activity:6534214015349075968)
-- [Project Board](https://github.com/thecherrytree/linkedInArticles/projects/1)
-- [Excel File for David Green's Top/Best Articles](https://github.com/thecherrytree/linkedInArticles/blob/master/data/top_articles.csv)
-- [CSV File for David Green's Article Text](https://github.com/thecherrytree/linkedInArticles/blob/master/data/davigrgreen_articles.csv)
+Below are a few resources to manage this project if you wish to get involved:
+- [Review the post that started the project](https://www.linkedin.com/feed/update/urn:li:activity:6534214015349075968)
+- [Project Board to submit issues & requests](https://github.com/thecherrytree/linkedInArticles/projects/1)
+- [CSV File for David Green's Top/Best Articles](https://github.com/thecherrytree/linkedInArticles/blob/master/data/top_articles.csv)
+- [CSV File for David Green's 108 Articles and their text](https://github.com/thecherrytree/linkedInArticles/blob/master/data/davigrgreen_articles.csv)
 - [My LinkedIn (if you want to connect/contribute)](https://www.linkedin.com/in/casoncherry/)
 
 
-#Contributors
+# Contributors
 [Ben Teusch - Idea Originator](https://www.linkedin.com/in/teuschb/)
 [@thecherrytree | Cason Cherry](https://www.linkedin.com/in/casoncherry/)
