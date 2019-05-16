@@ -1,4 +1,5 @@
 import csv
+import pandas as pd
 import time
 import secrets
 from bs4 import BeautifulSoup
@@ -62,3 +63,18 @@ def build_article_file_of_david_green_articles(articles, browser):
             writer.writerow({'author': author, 'date': date, 'title': title, 'url': url, 'content': content})
             # no, I'm not a script because I wait for a little while
             time.sleep(2)
+
+def read_in_top_articles():
+    top_articles = pd.read_csv('../data/top_articles.csv', header='infer')
+    return top_articles
+
+def determine_article_structure_and_parse(article_content):
+    pelements = article_content.find_all("p")
+    h2elements = article_content.find_all("h2")
+    h3elements = article_content.find_all("h3")
+    for p in pelements:
+        strong = p.find_all("strong")
+        a = p.find_all("a")
+        if strong == 2 & a ==1:
+            
+
