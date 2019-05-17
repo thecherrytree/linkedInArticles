@@ -1,4 +1,5 @@
 import supportingFunctions
+import csv
 from supportingFunctions import *
 
 loginUrl = 'https://www.linkedin.com/login'
@@ -22,11 +23,15 @@ top_articles = supportingFunctions.read_in_top_articles()
 
 #grab URLS from data in file and direct the browser to get anchors from David Green article
 i=0
-for url in top_articles['URL']:
-    reference_article = top_articles['Title'][i]
-    browser.get(url)
-    soup = supportingFunctions.parse_html(browser)
-    article_content = soup.find_all('div',  {"class": "reader-article-content"})
-    print(article_content)
-    supportingFunctions.determine_article_structure_and_parse(article_content)
-    i += 1
+with open('../data/david_green_top_best_articles', mode='w') as csv_file:
+    fieldnames = ['reference_article', 'title', 'author', 'url', 'content']
+    writer = csv.DictWriter(csv_file, delimiter=',', fieldnames=fieldnames)
+    writer.writeheader()
+    for url in top_articles['URL']:
+        reference_article = top_articles['Title'][i]
+        browser.get(url)
+        soup = supportingFunctions.parse_html(browser)
+        article_content = soup.find_all('div',  {"class": "reader-article-content"})
+        supportingFunctions.determine_article_structure_and_parse(article_content, reference_article, writer)
+        csv_file.flush()
+        i += 1

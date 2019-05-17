@@ -42,6 +42,7 @@ def build_article_file_of_david_green_articles(articles, browser):
     with open('../data/davigrgreen_articles.csv', mode='w') as csv_file:
         fieldnames = ['author', 'date', 'title', 'url', 'content']
         writer = csv.DictWriter(csv_file, delimiter=',', fieldnames=fieldnames)
+        writer.writeheader()
         for article in articles:
             author = 'David R. Green'
             url = 'https://www.linkedin.com'
@@ -51,14 +52,10 @@ def build_article_file_of_david_green_articles(articles, browser):
             date = article.select('time')[1].text.strip()
             title = article.select('h1')[0].text.strip()
             browser.get(url)
-            soup = supportingFunctions.parse_html(browser)
+            soup = parse_html(browser)
             articles = soup.find("div", {"class": "reader-article-content"})
             # Grabbing the article content from David Green's parent articles (these are likely summaries of his articles) for his "top" and "best" series
             content = articles.find_all("p")
-            # otherArticlesP = content
-            # otherArticlesh3 = articles.find_all("h3")
-            # for a in otherArticlesP:
-            #     print(a)
             # print({'author': author, 'date': date, 'title': title, 'url': url, 'content': content})
             writer.writerow({'author': author, 'date': date, 'title': title, 'url': url, 'content': content})
             # no, I'm not a script because I wait for a little while
@@ -68,13 +65,26 @@ def read_in_top_articles():
     top_articles = pd.read_csv('../data/top_articles.csv', header='infer')
     return top_articles
 
-def determine_article_structure_and_parse(article_content):
-    pelements = article_content.find_all("p")
-    h2elements = article_content.find_all("h2")
-    h3elements = article_content.find_all("h3")
+def determine_article_structure_and_parse(article_content, reference_article,writer):
+    pelements = article_content[0].find_all("p")
+    h2elements = article_content[0].find_all("h2")
+    h3elements = article_content[0].find_all("h3")
     for p in pelements:
+        print(p)
         strong = p.find_all("strong")
-        a = p.find_all("a")
-        if strong == 2 & a ==1:
-            
+        if strong:
+            if len(strong) == 2:
+                for h in strong:
+                    a = h.find_all("a")
+                    if len(a) == 1:
+                        for i in a:
+                            url = i['href']
+                            author = strong[0].text.strip()
+                            title = i.text.strip()
+                            content =""
+                            writer.writerow({'reference_article': reference_article, 'title': title, 'author': author, 'url': url, 'content': content})
+                            time.sleep(2)
+                    else:
+                        for h2 in h2elements:
+                            print('hi')
 

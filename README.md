@@ -48,6 +48,6 @@ Below are a few resources to manage this project if you wish to get involved:
 # Contributors
 [Ben Teusch - Idea Originator](https://www.linkedin.com/in/teuschb/)
 
-@keithmcnulty | [Keith McNulty](https://www.linkedin.com/in/keith-mcnulty/) for his RShiney webscraper
+[@keithmcnulty](https://github.com/keithmcnulty) | [Keith McNulty](https://www.linkedin.com/in/keith-mcnulty/) for his RShiney webscraper
 
-@thecherrytree |[Cason Cherry](https://www.linkedin.com/in/casoncherry/)
+[@thecherrytree](https://github.com/thecherrytree) |[Cason Cherry](https://www.linkedin.com/in/casoncherry/)
