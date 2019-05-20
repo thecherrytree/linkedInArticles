@@ -73,18 +73,28 @@ def determine_article_structure_and_parse(article_content, reference_article,wri
         print(p)
         strong = p.find_all("strong")
         if strong:
-            if len(strong) == 2:
-                for h in strong:
-                    a = h.find_all("a")
-                    if len(a) == 1:
+            if len(strong) >= 2 and len(strong) <=4:
+                for s in strong:
+                    a = s.find_all("a")
+                    if len(a) >= 1 and len(a)<=2:
                         for i in a:
-                            url = i['href']
-                            author = strong[0].text.strip()
-                            title = i.text.strip()
-                            content =""
-                            writer.writerow({'reference_article': reference_article, 'title': title, 'author': author, 'url': url, 'content': content})
-                            time.sleep(2)
-                    else:
-                        for h2 in h2elements:
-                            print('hi')
+                            if i.find_all("strong")!=1:
+                                url = i['href']
+                                print(strong)
+                                author = strong[0].text.strip()
+                                title = i.text.strip()
+                                content =""
+                                writer.writerow({'reference_article': reference_article, 'title': title, 'author': author, 'url': url, 'content': content})
+                                time.sleep(2)
+                            else:
+                                if i.find_all("strong")==1 :
+                                    url = i['href']
+                                    print(strong)
+                                    author = strong[0].text.strip()
+                                    title = i.text.strip()
+                                    content =""
+                                    writer.writerow({'reference_article': reference_article, 'title': title, 'author': author, 'url': url, 'content': content})
+                                    time.sleep(2)
+    for h2 in h2elements:
+        print('hi')
 
