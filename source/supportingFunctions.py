@@ -62,7 +62,7 @@ def build_article_file_of_david_green_articles(articles, browser):
             time.sleep(2)
 
 def read_in_top_articles():
-    top_articles = pd.read_csv('../data/top_articles.csv', header='infer')
+    top_articles = pd.read_csv('../data/top_articles_2.csv', header='infer')
     return top_articles
 
 def determine_article_structure_and_parse(article_content, reference_article,writer):
@@ -73,28 +73,48 @@ def determine_article_structure_and_parse(article_content, reference_article,wri
         print(p)
         strong = p.find_all("strong")
         if strong:
-            if len(strong) >= 2 and len(strong) <=4:
+            if len(strong) >= 1 and len(strong) <=4:
                 for s in strong:
+                    loopIncrement = 1
                     a = s.find_all("a")
-                    if len(a) >= 1 and len(a)<=2:
-                        for i in a:
-                            if i.find_all("strong")!=1:
-                                url = i['href']
-                                print(strong)
-                                author = strong[0].text.strip()
-                                title = i.text.strip()
-                                content =""
-                                writer.writerow({'reference_article': reference_article, 'title': title, 'author': author, 'url': url, 'content': content})
-                                time.sleep(2)
-                            else:
-                                if i.find_all("strong")==1 :
+                    if not a:
+                        a = p.find_all("a")
+                        if len(a) >= 1 and len(a) <=2:
+                            for i in a:
+                                astrong = i.find_all("strong")
+                                if len(astrong):
                                     url = i['href']
-                                    print(strong)
                                     author = strong[0].text.strip()
                                     title = i.text.strip()
                                     content =""
-                                    writer.writerow({'reference_article': reference_article, 'title': title, 'author': author, 'url': url, 'content': content})
+                                    if "@" not in title and "linkedin.com/in" not in url and title != author:
+                                        writer.writerow({'reference_article': reference_article, 'title': title, 'author': author, 'url': url, 'content': content})
                                     time.sleep(2)
+                                else:
+                                    url = i['href']
+                                    author = strong[0].text.strip()
+                                    title = i.text.strip()
+                                    content =""
+                                    if "@" not in title and "linkedin.com/in" not in url and title != author:
+                                        writer.writerow({'reference_article': reference_article, 'title': title, 'author': author, 'url': url, 'content': content})
+                                    time.sleep(2)
+                        if len(a) > 0 and len(a) == 1:
+                            break
+                        else:
+                            loopIncrement+=1
+                            if loopIncrement == len(a):
+                                break
+                    else:
+                        if len(a) >= 1 and len(a)<=2:
+                            for i in a:
+                                url = i['href']
+                                author = strong[0].text.strip()
+                                title = i.text.strip()
+                                content =""
+                                if "@" not in title and "linkedin.com/in" not in url and title != author:
+                                    writer.writerow({'reference_article': reference_article, 'title': title, 'author': author, 'url': url, 'content': content})
+                                time.sleep(2)
+
     for h2 in h2elements:
         print('hi')
 
