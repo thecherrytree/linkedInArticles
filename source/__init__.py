@@ -29,9 +29,14 @@ with open('../data/david_green_top_best_articles', mode='w') as csv_file:
     writer.writeheader()
     for url in top_articles['URL']:
         reference_article = top_articles['Title'][i]
-        browser.get(url)
-        soup = supportingFunctions.parse_html(browser)
-        article_content = soup.find_all('div',  {"class": "reader-article-content"})
-        supportingFunctions.determine_article_structure_and_parse(article_content, reference_article, writer)
-        csv_file.flush()
-        i += 1
+        try:
+            browser.get(url)
+            soup = supportingFunctions.parse_html(browser)
+            article_content = soup.find_all('div',  {"class": "reader-article-content"})
+            supportingFunctions.determine_article_structure_and_parse(article_content, reference_article, writer, browser)
+            csv_file.flush()
+            i += 1
+        except AttributeError:
+            print("Could not get to article in browser...continuing on")
+            i += 1
+            continue

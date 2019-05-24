@@ -62,15 +62,28 @@ def build_article_file_of_david_green_articles(articles, browser):
             time.sleep(2)
 
 def read_in_top_articles():
-    top_articles = pd.read_csv('../data/top_articles_2.csv', header='infer')
+    top_articles = pd.read_csv('../data/top_articles.csv', header='infer')
     return top_articles
 
-def determine_article_structure_and_parse(article_content, reference_article,writer):
+def set_content(browser, url):
+    try:
+        if "linkedin.com/pulse" in url:
+            browser.get(url)
+            soup = parse_html(browser)
+            articles = soup.find("div", {"class": "reader-article-content"})
+            content = articles.find_all("p")
+        else:
+            content = []
+        return content
+    except AttributeError:
+        content = "This URL could not be found."
+        return content
+
+def determine_article_structure_and_parse(article_content, reference_article,writer, browser):
     pelements = article_content[0].find_all("p")
     h2elements = article_content[0].find_all("h2")
     h3elements = article_content[0].find_all("h3")
     for p in pelements:
-        print(p)
         strong = p.find_all("strong")
         if strong:
             if len(strong) >= 1 and len(strong) <=4:
@@ -84,9 +97,9 @@ def determine_article_structure_and_parse(article_content, reference_article,wri
                                 astrong = i.find_all("strong")
                                 if len(astrong):
                                     url = i['href']
+                                    content = set_content(browser, url)
                                     author = strong[0].text.strip()
                                     title = i.text.strip()
-                                    content =""
                                     if "@" not in title and "linkedin.com/in" not in url and title != author:
                                         writer.writerow({'reference_article': reference_article, 'title': title, 'author': author, 'url': url, 'content': content})
                                     time.sleep(2)
@@ -94,7 +107,7 @@ def determine_article_structure_and_parse(article_content, reference_article,wri
                                     url = i['href']
                                     author = strong[0].text.strip()
                                     title = i.text.strip()
-                                    content =""
+                                    content = set_content(browser, url)
                                     if "@" not in title and "linkedin.com/in" not in url and title != author:
                                         writer.writerow({'reference_article': reference_article, 'title': title, 'author': author, 'url': url, 'content': content})
                                     time.sleep(2)
@@ -110,11 +123,87 @@ def determine_article_structure_and_parse(article_content, reference_article,wri
                                 url = i['href']
                                 author = strong[0].text.strip()
                                 title = i.text.strip()
-                                content =""
+                                content = set_content(browser, url)
                                 if "@" not in title and "linkedin.com/in" not in url and title != author:
                                     writer.writerow({'reference_article': reference_article, 'title': title, 'author': author, 'url': url, 'content': content})
                                 time.sleep(2)
-
     for h2 in h2elements:
-        print('hi')
-
+        print(h2)
+        h2strong = h2.find_all("strong")
+        h2a = h2.find_all("a")
+        if h2strong and h2a:
+            if len(h2strong) == len(h2a):
+                i=0
+                for s in h2strong:
+                    url = h2a[i]['href']
+                    author = s.text.strip()
+                    title = h2a[i].text.strip()
+                    content = set_content(browser, url)
+                    if "@" not in title and "linkedin.com/in" not in url and title != author:
+                        writer.writerow(
+                            {'reference_article': reference_article, 'title': title, 'author': author, 'url': url,
+                             'content': content})
+                    time.sleep(2)
+                    i+=1
+            else:
+                i = 0
+                for a in h2a:
+                    h2as = a.find_all("strong")
+                    url = a['href']
+                    author =""
+                    if len(h2strong) < len(h2a):
+                        author = h2strong[0].text.strip()
+                    else:
+                        author = h2strong[i].text.strip()
+                    title =""
+                    if h2as:
+                        title = h2as[0].text.strip()
+                    else:
+                        title = a.text.strip()
+                    content = set_content(browser, url)
+                    if "@" not in title and "linkedin.com/in" not in url and title != author:
+                        writer.writerow(
+                            {'reference_article': reference_article, 'title': title, 'author': author, 'url': url,
+                             'content': content})
+                    i += 2
+                    time.sleep(2)
+    for h3 in h3elements:
+        print(h3)
+        h3strong = h3.find_all("strong")
+        h3a = h3.find_all("a")
+        if h3strong and h3a:
+            if len(h3strong) == len(h3a):
+                i=0
+                for s in h3strong:
+                    url = h3a[i]['href']
+                    author = s.text.strip()
+                    title = h3a[i].text.strip()
+                    content = set_content(browser, url)
+                    if "@" not in title and "linkedin.com/in" not in url and title != author:
+                        writer.writerow(
+                            {'reference_article': reference_article, 'title': title, 'author': author, 'url': url,
+                             'content': content})
+                    time.sleep(2)
+                    i+=1
+            else:
+                i = 0
+                for a in h3a:
+                    h3as = a.find_all("strong")
+                    url = a['href']
+                    author =""
+                    if len(h3strong) < len(h3a):
+                        author = h3strong[0].text.strip()
+                    else:
+                        author = h3strong[i].text.strip()
+                    title =""
+                    if h3as:
+                        title = h3as[0].text.strip()
+                    else:
+                        title = a.text.strip()
+                    content = set_content(browser, url)
+                    if "@" not in title and "linkedin.com/in" not in url and title != author:
+                        writer.writerow(
+                            {'reference_article': reference_article, 'title': title, 'author': author, 'url': url,
+                             'content': content})
+                    time.sleep(2)
+                    i += 2
